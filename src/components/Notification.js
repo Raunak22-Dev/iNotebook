@@ -19,11 +19,20 @@ const Notification = ({ message, type }) => {
   // Call notify to display the toast
   React.useEffect(() => {
     notify();
+    // eslint-disable-next-line
   }, [message, type]);
 
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer   position="top-right"
+  autoClose={3000} // Auto-close after 3 seconds
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHove />
     </div>
   );
 };

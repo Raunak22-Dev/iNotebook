@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Notification from './Notification'; // Import the Notification component
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -8,6 +9,7 @@ const Signup = () => {
         password: "",
         confirmPassword: ""
     });
+    const [notification, setNotification] = useState({ message: "", type: "" }); // State for notifications
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -17,10 +19,11 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            return console.error("Passwords do not match");
+            setNotification({ message: "Passwords do not match", type: "error" });
+            return;
         }
         try {
-            const response = await fetch("http://localhost:3002/api/auth/createuser", {
+            const response = await fetch("http://localhost:3004/api/auth/createuser", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,19 +36,22 @@ const Signup = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log("Signup successful");
+                setNotification({ message: "Signup successful", type: "success" });
                 localStorage.setItem('token', data.token);
-                navigate("/login"); // Redirect to login after signup
+                setTimeout(() => navigate("/login"), 2000); // Redirect to login after signup
             } else {
-                console.error('Signup failed:', data.error);
+                setNotification({ message: data.error || "Signup failed", type: "error" });
             }
         } catch (error) {
-            console.error('Signup request error:', error);
+            setNotification({ message: "Signup request error", type: "error" });
         }
     };
 
     return (
         <div className="container">
+            {/* Render Notification component when there's a notification */}
+            {notification.message && <Notification message={notification.message} type={notification.type} />}
+
             <form onSubmit={handleSubmit}>
                 <div className="mb-3 my-5">
                     <label htmlFor="userName" className="form-label">

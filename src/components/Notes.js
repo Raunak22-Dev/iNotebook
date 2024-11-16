@@ -1,14 +1,28 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { NoteContext } from "../context/notes/notesContext";
 import Notesitems from "./Notesitems";
+import { useNavigate } from "react-router-dom";
 
 const Notes = () => {
   const context = useContext(NoteContext);
-  const { notes = [], editNote } = context; // Provide a default value for notes
+  const { notes = [], getNotes, editNote } = context; // Provide a default value for notes
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (localStorage.getItem('token')) {
+        await getNotes(); // Ensure it waits for the notes to load
+      } else {
+        navigate("/login");
+      }
+    };
+
+    checkAuth();
+  }, [navigate, getNotes]); // Add dependencies to trigger the effect correctly
 
   const ref = useRef(null);
   const refClose = useRef(null);
-  
+
   const [note, setNote] = useState({ id: "", Utitle: "", Udescription: "", Utag: "" });
 
   const updateNote = (currentNote) => {

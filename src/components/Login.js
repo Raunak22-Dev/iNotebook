@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Notification from "./Notification"; // Import the Notification component
 
 const Login = () => {
     const navigate = useNavigate();
-    
+    const [notification, setNotification] = useState({ message: "", type: "" }); // State for notifications
+
     const handleSubmit = async (e) => {
         e.preventDefault(); 
         try {
-            const response = await fetch("http://localhost:3002/api/auth/login", {
+            const response = await fetch("http://localhost:3004/api/auth/login", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -19,20 +21,23 @@ const Login = () => {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log("Login successful");
-                localStorage.setItem('token', data.token); // assuming the token is in data.token
-                navigate("/"); // Navigate to the homepage after successful login
+                setNotification({ message: "Login successful", type: "success" });
+                localStorage.setItem('token', data.token); // Save token
+                setTimeout(() => navigate("/"), 2000); // Redirect after 2 seconds
             } else {
-                console.error('Login failed:', data.error);
+                setNotification({ message: data.error || "Login failed", type: "error" });
             }
         } catch (error) {
-            console.error('Login request error:', error);
+            setNotification({ message: "Login request error", type: "error" });
         }
     };
-  
+
     return (
         <div>
-            <form onSubmit={handleSubmit}> 
+            {/* Render Notification component when there's a notification */}
+            {notification.message && <Notification message={notification.message} type={notification.type} />}
+            
+            <form onSubmit={handleSubmit}>
                 <div className="mb-3 my-5">
                     <label htmlFor="email" className="form-label">
                         Email address
@@ -49,7 +54,12 @@ const Login = () => {
                     <label htmlFor="password" className="form-label">
                         Password
                     </label>
-                    <input type="password" className="form-control" id="password" name="password" />
+                    <input
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        name="password"
+                    />
                 </div>
                 <button type="submit" className="btn btn-primary">
                     Submit
