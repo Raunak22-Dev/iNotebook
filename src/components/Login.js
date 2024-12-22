@@ -68,7 +68,7 @@ const Login = () => {
 
         {/* Links in the same row, not centered */}
         <div className="d-flex justify-content-between mb-4">
-            <a href="/forgot-password" className="text-decoration-none text-primary fs-6">
+            <a href="/" className="text-decoration-none text-primary fs-6">
                 Forgot Password?
             </a>
             <a href="/signup" className="text-decoration-none text-primary fs-6">
