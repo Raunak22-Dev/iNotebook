@@ -2,37 +2,48 @@ import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Notification = ({ message, type }) => {
-  // Function to trigger the toast notification
+const Notification = ({ message, type, trigger }) => {
+  // Function to display the toast notification
   const notify = () => {
-    if (type === 'success') {
-      toast.success(message);
-    } else if (type === 'warning') {
-      toast.warn(message);
-    } else if (type === 'error') {
-      toast.error(message);
-    } else if (type ==="info"){
-      toast.info(message)
+    switch (type) {
+      case 'success':
+        toast.success(message);
+        break;
+      case 'warning':
+        toast.warn(message);
+        break;
+      case 'error':
+        toast.error(message);
+        break;
+      case 'info':
+        toast.info(message);
+        break;
+      default:
+        break;
     }
   };
 
-  // Call notify to display the toast
+  // Trigger the notification every time `trigger` changes
   React.useEffect(() => {
-    notify();
-    // eslint-disable-next-line
-  }, [message, type]);
+    if (message && type) {
+      notify();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trigger]);
 
   return (
     <div>
-      <ToastContainer   position="top-right"
-  autoClose={3000} // Auto-close after 3 seconds
-  hideProgressBar={false}
-  newestOnTop={false}
-  closeOnClick
-  rtl={false}
-  pauseOnFocusLoss
-  draggable
-  pauseOnHove />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000} // Auto-close after 3 seconds
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

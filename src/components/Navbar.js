@@ -14,30 +14,52 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container-fluid container">
-        <Link className="navbar-brand" to="/">iNoteBook</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
-            </li>
-          </ul>
-          {!localStorage.getItem('token') ?
-            <form className="d-flex" role="search">
-              <Link className="btn btn-success mx-2" to="/login" role="button">Login</Link>
-              <Link className="btn btn-success" to="/signup" role="button">Signup</Link>
-            </form>
-            : <button onClick={handleLogout} className='btn btn-primary'>Logout</button>}
-        </div>
+    <nav className="navbar navbar-expand-lg bg-light shadow-sm">
+  <div className="container">
+    <Link className="navbar-brand fw-bold text-primary fs-4" to="/" style={{ fontFamily: 'Roboto, sans-serif' }}>iNoteBook</Link>
+    <button
+      className="navbar-toggler border-0 shadow-sm"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span className="navbar-toggler-icon"></span>
+    </button>
+    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <Link className={`nav-link ${location.pathname === "/" ? "text-primary fw-bold" : "text-dark fw-normal"}`} to="/" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1rem' }}>
+            Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className={`nav-link ${location.pathname === "/about" ? "text-primary fw-bold" : "text-dark fw-normal"}`} to="/about" style={{ fontFamily: 'Poppins, sans-serif', fontSize: '1rem' }}>
+            About
+          </Link>
+        </li>
+      </ul>
+      <div className="d-flex align-items-center">
+        {!localStorage.getItem('token') ? (
+          <>
+            <Link className="btn btn-outline-primary me-2" to="/login" role="button" style={{ borderRadius: '20px', fontFamily: 'Poppins, sans-serif' }}>Login</Link>
+            <Link className="btn btn-primary text-white" to="/signup" role="button" style={{ borderRadius: '20px', fontFamily: 'Poppins, sans-serif' }}>Signup</Link>
+          </>
+        ) : (
+          <button
+            onClick={handleLogout}
+            className="btn btn-danger text-white shadow-sm"
+            style={{ borderRadius: '20px', fontFamily: 'Poppins, sans-serif' }}>
+            Logout
+          </button>
+        )}
       </div>
-    </nav>
+    </div>
+  </div>
+</nav>
+
   );
 };
 
